@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addtopastes, updatetopastes } from "../Redux/PasteSlice.js";
+import { toast } from "react-hot-toast";
 
 const Home = () => {
   const [title, setTitle] = useState("");
@@ -20,9 +21,25 @@ const Home = () => {
   },[pasteId]);
 
   function handleclick(){
+    if (!title.trim() || !content.trim()) {
+      setTitle(oldTitle => oldTitle);  
+      setContent(oldContent => oldContent);  
+      document.querySelector('input[type="text"]').style.borderColor = 'red';
+      document.querySelector('textarea').style.borderColor = 'red';
+      toast.error('Title and content are required', {
+        duration: 2000,
+        position: 'top-right',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      });
+      return;
+    }
     const data ={
-      title: title,
-      content: content,
+      title: title.trim(),
+      content: content.trim(),
       _id : pasteId || Date.now().toString(36).substring(2),
       createdon : new Date().toISOString(),
     }
