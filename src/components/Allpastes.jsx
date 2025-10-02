@@ -16,13 +16,14 @@ const Allpastes = () => {
 
   function handleShare() {
     const shareData = {
-      title: 'My Paste',
-      text: 'Check out this paste!',
-      url: window.location.href
+      title: "My Paste",
+      text: "Check out this paste!",
+      url: window.location.href,
     };
-    if(navigator.share) {
-      navigator.share(shareData)      
-      .catch((err) => toast.error("Error sharing paste: " + err.message));
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .catch((err) => toast.error("Error sharing paste: " + err.message));
     } else {
       toast.error("Web Share API not supported in this browser.");
     }
@@ -38,7 +39,7 @@ const Allpastes = () => {
       />
       <p className="font-bold font-serif text-3xl">All Pastes</p>
       <div className="flex flex-col gap-2">
-        {filteredPastes.length > 0 &&
+        {filteredPastes.length > 0 ? (
           filteredPastes.map((paste) => {
             return (
               <div
@@ -57,9 +58,7 @@ const Allpastes = () => {
                 <div className="flex flex-col justify-between ml-auto items-end gap-2 flex-shrink-0">
                   <div className="flex flex-wrap gap-1">
                     <button className="text-xs md:text-sm px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 transition">
-                      <Link to={`/?pasteId=${paste?._id}`}>
-                        Edit
-                      </Link>
+                      <Link to={`/?pasteId=${paste?._id}`}>Edit</Link>
                     </button>
                     <button
                       className="text-xs md:text-sm px-1.5 py-0.5 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
@@ -67,7 +66,10 @@ const Allpastes = () => {
                     >
                       Delete
                     </button>
-                    <button className="text-xs md:text-sm px-1.5 py-0.5 bg-green-100 text-green-700 rounded hover:bg-green-200 transition" onClick={handleShare}>
+                    <button
+                      className="text-xs md:text-sm px-1.5 py-0.5 bg-green-100 text-green-700 rounded hover:bg-green-200 transition"
+                      onClick={handleShare}
+                    >
                       Share
                     </button>
                     <button className="text-xs md:text-sm px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition">
@@ -98,7 +100,10 @@ const Allpastes = () => {
                 </div>
               </div>
             );
-          })}
+          })
+        ) : (
+          <div className="text-center text-gray-500">No pastes found</div>
+        )}
       </div>
     </div>
   );
